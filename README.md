@@ -75,4 +75,4 @@ This project follows the **Model-View-Controller (MVC)** architectural pattern:
 ---
 
 ## 👨‍💻 Author
-Developed by **Dinesh** for Final Year Project.
+Developed by **Hrishikesh* for Final Year Project.
