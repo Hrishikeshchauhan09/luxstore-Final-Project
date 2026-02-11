@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
+
+<head>
+    <title>Login</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="auth-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-5">
+                        <div class="auth-card">
+                            <div class="auth-header">
+                                <i class="bi bi-person-circle"></i>
+                                <h2>Welcome Back</h2>
+                                <p class="mb-0 text-white-50">Please login to your account</p>
+                            </div>
+
+                            <div class="auth-body">
+                                <div th:if="${param.registered}" class="alert alert-success">
+                                    Registration successful! Please login.
+                                </div>
+                                <div th:if="${param.error}" class="alert alert-danger">
+                                    Invalid username or password.
+                                </div>
+
+                                <form th:action="@{/login}" method="post" class="auth-form">
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Username</label>
+                                        <input type="text" class="form-control" id="username" name="username"
+                                            placeholder="Enter your username" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            placeholder="••••••••" required>
+                                    </div>
+                                    <!-- Optional: Remember Me -->
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                                        <label class="form-check-label small" for="rememberMe">Remember me</label>
+                                    </div>
+
+                                    <button type="submit" class="auth-btn w-100">Login</button>
+                                </form>
+
+                                <div class="auth-footer">
+                                    <p class="mb-1">Don't have an account?</p>
+                                    <a th:href="@{/register}">Create New Account</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

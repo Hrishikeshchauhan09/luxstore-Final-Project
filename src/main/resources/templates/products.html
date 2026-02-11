@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
+
+<head>
+    <title>Products</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5 pt-5">
+            <h1 class="text-center mb-4">Our Products</h1>
+
+            <!-- Filter Section -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="btn-group me-2" role="group">
+                        <a th:href="@{/products}" class="btn btn-outline-primary">All</a>
+                        <a th:each="category : ${categories}" th:href="@{/products(category=${category})}"
+                            th:text="${category}" class="btn btn-outline-primary"></a>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <a th:each="gender : ${genders}" th:href="@{/products(gender=${gender})}" th:text="${gender}"
+                            class="btn btn-outline-secondary"></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4 col-xl-3" th:each="product : ${products}">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img th:src="@{'/products/image/' + ${product.id}}" th:alt="${product.name}" loading="lazy">
+                            <span class="product-badge" th:text="${product.gender}"></span>
+                        </div>
+                        <div class="product-body">
+                            <div class="product-category" th:text="${product.category}"></div>
+                            <h5 class="product-name" th:text="${product.name}"></h5>
+                            <p class="product-description" th:text="${product.description}"></p>
+                            <div class="product-footer">
+                                <div class="product-price" th:text="'$' + ${product.price}"></div>
+                                <a th:href="@{'/cart/add/' + ${product.id}}" class="btn btn-add-cart">
+                                    <i class="bi bi-cart-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

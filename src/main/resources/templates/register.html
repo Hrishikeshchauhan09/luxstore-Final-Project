@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
+
+<head>
+    <title>Register</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="auth-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-5">
+                        <div class="auth-card">
+                            <div class="auth-header">
+                                <i class="bi bi-person-plus"></i>
+                                <h2>Create Account</h2>
+                                <p class="mb-0 text-white-50">Join our community today</p>
+                            </div>
+
+                            <div class="auth-body">
+                                <div th:if="${param.error}" class="alert alert-danger">
+                                    Email already exists!
+                                </div>
+
+                                <form th:action="@{/register}" method="post" class="auth-form">
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Username</label>
+                                        <input type="text" class="form-control" id="username" name="username"
+                                            placeholder="Choose a username" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            placeholder="••••••••" required>
+                                    </div>
+
+                                    <button type="submit" class="auth-btn w-100">Register</button>
+                                </form>
+
+                                <div class="auth-footer">
+                                    <p class="mb-1">Already have an account?</p>
+                                    <a th:href="@{/login}">Login here</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

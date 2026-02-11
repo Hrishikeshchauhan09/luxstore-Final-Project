@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
+
+<head>
+    <title>Order Success - LuxeStore</title>
+    <style>
+        .success-container {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .success-icon i {
+            font-size: 4rem;
+            color: white;
+        }
+
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .success-message {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin-bottom: 2rem;
+        }
+
+        .order-details-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .order-number {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+        }
+
+        .btn-primary-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-outline-custom {
+            border: 2px solid #667eea;
+            color: #667eea;
+            background: white;
+        }
+
+        .btn-outline-custom:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            position: absolute;
+            animation: confetti-fall 3s linear;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .timeline {
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-subtitle {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5 pt-5 pb-5">
+            <div class="success-container">
+                <!-- Success Icon -->
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+
+                <!-- Success Title -->
+                <h1 class="success-title">Order Placed Successfully!</h1>
+                <p class="success-message">
+                    🎉 Thank you for your purchase! Your order has been confirmed and will be processed soon.
+                </p>
+
+                <!-- Order Details Card -->
+                <div class="order-details-card">
+                    <div class="order-number text-center">
+                        <i class="fas fa-receipt me-2"></i>Order Confirmation
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">
+                            <i class="fas fa-calendar-alt me-2"></i>Order Date:
+                        </span>
+                        <span class="detail-value"
+                            th:text="${#temporals.format(#temporals.createNow(), 'dd MMM yyyy, hh:mm a')}">
+                            10 Feb 2026, 06:30 PM
+                        </span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">
+                            <i class="fas fa-box me-2"></i>Total Items:
+                        </span>
+                        <span class="detail-value" th:text="${orders != null ? #lists.size(orders) : 0}">
+                            3 items
+                        </span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">
+                            <i class="fas fa-credit-card me-2"></i>Payment Method:
+                        </span>
+                        <span class="detail-value"
+                            th:text="${orders != null and !orders.isEmpty() ? orders[0].paymentMethod : 'N/A'}">
+                            Cash on Delivery
+                        </span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">
+                            <i class="fas fa-tag me-2"></i>Status:
+                        </span>
+                        <span class="detail-value">
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- What's Next Section -->
+                <div class="order-details-card">
+                    <h5 class="mb-3">
+                        <i class="fas fa-info-circle me-2 text-primary"></i>What Happens Next?
+                    </h5>
+
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Order Confirmed</div>
+                                <div class="timeline-subtitle">Your order has been received</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon" style="background: #6c757d;">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Processing</div>
+                                <div class="timeline-subtitle">We're preparing your items</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon" style="background: #6c757d;">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Shipped</div>
+                                <div class="timeline-subtitle">Your order is on the way</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon" style="background: #6c757d;">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Delivered</div>
+                                <div class="timeline-subtitle">Enjoy your purchase!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a th:href="@{/orders}" class="btn btn-primary-gradient btn-action">
+                        <i class="fas fa-list me-2"></i>View My Orders
+                    </a>
+                    <a th:href="@{/}" class="btn btn-outline-custom btn-action">
+                        <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+                    </a>
+                </div>
+
+                <!-- Additional Info -->
+                <div class="mt-4">
+                    <p class="text-muted small">
+                        <i class="fas fa-envelope me-2"></i>
+                        A confirmation email has been sent to your registered email address.
+                    </p>
+                    <p class="text-muted small">
+                        <i class="fas fa-headset me-2"></i>
+                        Need help? <a href="#" class="text-decoration-none">Contact Support</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Create confetti effect
+            function createConfetti() {
+                const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe'];
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti';
+                        confetti.style.left = Math.random() * 100 + '%';
+                        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                        confetti.style.animationDelay = Math.random() * 3 + 's';
+                        document.body.appendChild(confetti);
+
+                        setTimeout(() => confetti.remove(), 3000);
+                    }, i * 30);
+                }
+            }
+
+            // Trigger confetti on page load
+            document.addEventListener('DOMContentLoaded', createConfetti);
+        </script>
+    </section>
+</body>
+
+</html>

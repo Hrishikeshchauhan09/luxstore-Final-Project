@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
+
+<head>
+    <title th:text="${product.name} + ' - Details'">Product Details</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5 pt-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="product-detail-image mb-4">
+                        <img th:src="@{'/products/image/' + ${product.id}}" class="img-fluid rounded shadow"
+                            th:alt="${product.name}">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/products}">Products</a></li>
+                            <li class="breadcrumb-item active" aria-current="page" th:text="${product.name}">Product
+                            </li>
+                        </ol>
+                    </nav>
+
+                    <h1 class="display-4 fw-bold" th:text="${product.name}">Product Name</h1>
+                    <div class="mb-3">
+                        <span class="badge bg-secondary me-2" th:text="${product.category}">Category</span>
+                        <span class="badge bg-info text-dark" th:text="${product.gender}">Gender</span>
+                    </div>
+
+                    <h2 class="text-primary mb-4" th:text="'$' + ${product.price}">$99.99</h2>
+
+                    <p class="lead" th:text="${product.description}">Product Description</p>
+
+                    <div class="d-grid gap-2 d-md-block mt-5">
+                        <a th:href="@{'/cart/add/' + ${product.id}}" class="btn btn-primary btn-lg px-5">
+                            <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                        </a>
+                        <a th:href="@{/products}" class="btn btn-outline-secondary btn-lg">
+                            Back to Shop
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

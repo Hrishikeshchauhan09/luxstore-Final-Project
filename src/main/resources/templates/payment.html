@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
+
+<head>
+    <title>Payment - LuxeStore</title>
+    <style>
+        .payment-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .payment-card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .payment-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+        }
+
+        .payment-method-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .payment-method-card.selected {
+            border-color: #667eea;
+            background-color: #f8f9ff;
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+
+        .order-summary-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .summary-total {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #667eea;
+            padding-top: 0.75rem;
+            border-top: 2px solid #dee2e6;
+        }
+
+        .btn-complete-payment {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-complete-payment:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .address-display {
+            background: white;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5 pt-5 pb-5">
+            <div class="payment-container">
+                <!-- Header -->
+                <div class="payment-card mb-4">
+                    <div class="payment-header text-center">
+                        <h2 class="mb-2">
+                            <i class="fas fa-lock me-2"></i>Secure Payment
+                        </h2>
+                        <p class="mb-0 opacity-75">Complete your order securely</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Payment Form -->
+                    <div class="col-lg-7">
+                        <form th:action="@{/orders/create}" method="post">
+                            <!-- Hidden Fields -->
+                            <input type="hidden" name="selectedAddressId" th:value="${selectedAddress.id}">
+
+                            <!-- Shipping Address -->
+                            <div class="card payment-card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">
+                                        <i class="fas fa-shipping-fast me-2 text-primary"></i>Shipping Address
+                                    </h5>
+                                    <div class="address-display">
+                                        <p class="mb-1 fw-bold" th:text="${selectedAddress.name}">Home</p>
+                                        <p class="mb-0 text-muted">
+                                            <span th:text="${selectedAddress.area}">Area</span>,
+                                            <span th:text="${selectedAddress.city}">City</span>,
+                                            <span th:text="${selectedAddress.state}">State</span> -
+                                            <span th:text="${selectedAddress.pincode}">Pincode</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment Method -->
+                            <div class="card payment-card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">
+                                        <i class="fas fa-credit-card me-2 text-primary"></i>Payment Method
+                                    </h5>
+
+                                    <!-- Credit Card -->
+                                    <div class="payment-method-card" onclick="selectPayment('creditCard')">
+                                        <div class="d-flex align-items-center">
+                                            <div class="payment-icon">
+                                                <i class="fas fa-credit-card text-primary"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <input class="form-check-input me-2" type="radio" name="paymentMethod"
+                                                    id="creditCard" value="Credit Card" checked>
+                                                <label class="form-check-label fw-bold" for="creditCard">
+                                                    Credit / Debit Card
+                                                </label>
+                                                <p class="mb-0 text-muted small">Visa, Mastercard, Amex</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- PayPal -->
+                                    <div class="payment-method-card" onclick="selectPayment('paypal')">
+                                        <div class="d-flex align-items-center">
+                                            <div class="payment-icon">
+                                                <i class="fab fa-paypal text-info"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <input class="form-check-input me-2" type="radio" name="paymentMethod"
+                                                    id="paypal" value="PayPal">
+                                                <label class="form-check-label fw-bold" for="paypal">
+                                                    PayPal
+                                                </label>
+                                                <p class="mb-0 text-muted small">Fast & secure payment</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- UPI -->
+                                    <div class="payment-method-card" onclick="selectPayment('upi')">
+                                        <div class="d-flex align-items-center">
+                                            <div class="payment-icon">
+                                                <i class="fas fa-mobile-alt text-success"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <input class="form-check-input me-2" type="radio" name="paymentMethod"
+                                                    id="upi" value="UPI">
+                                                <label class="form-check-label fw-bold" for="upi">
+                                                    UPI Payment
+                                                </label>
+                                                <p class="mb-0 text-muted small">Google Pay, PhonePe, Paytm</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cash on Delivery -->
+                                    <div class="payment-method-card" onclick="selectPayment('cod')">
+                                        <div class="d-flex align-items-center">
+                                            <div class="payment-icon">
+                                                <i class="fas fa-money-bill-wave text-warning"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <input class="form-check-input me-2" type="radio" name="paymentMethod"
+                                                    id="cod" value="Cash on Delivery">
+                                                <label class="form-check-label fw-bold" for="cod">
+                                                    Cash on Delivery
+                                                </label>
+                                                <p class="mb-0 text-muted small">Pay when you receive</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Complete Payment Button -->
+                            <button type="submit" class="btn btn-primary btn-complete-payment w-100">
+                                <i class="fas fa-check-circle me-2"></i>Complete Payment
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Order Summary -->
+                    <div class="col-lg-5">
+                        <div class="card payment-card sticky-top" style="top: 100px;">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">
+                                    <i class="fas fa-receipt me-2 text-primary"></i>Order Summary
+                                </h5>
+
+                                <div class="order-summary-card">
+                                    <!-- Cart Items -->
+                                    <div class="mb-3">
+                                        <h6 class="text-muted mb-2">Items (<span
+                                                th:text="${#lists.size(cartItems)}">0</span>)</h6>
+                                        <div th:each="item : ${cartItems}" class="d-flex justify-content-between mb-2">
+                                            <span class="text-truncate me-2"
+                                                th:text="${item.product.name}">Product</span>
+                                            <span class="text-nowrap">
+                                                <span th:text="${item.quantity}">1</span> ×
+                                                $<span th:text="${item.product.price}">0</span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <!-- Pricing -->
+                                    <div class="summary-row">
+                                        <span>Subtotal:</span>
+                                        <span>$<span th:text="${total}">0.00</span></span>
+                                    </div>
+                                    <div class="summary-row">
+                                        <span>Shipping:</span>
+                                        <span>$<span th:text="${shipping}">0.00</span></span>
+                                    </div>
+                                    <div class="summary-row">
+                                        <span>Tax (10%):</span>
+                                        <span>$<span
+                                                th:text="${#numbers.formatDecimal(total * 0.1, 1, 2)}">0.00</span></span>
+                                    </div>
+
+                                    <div class="summary-row summary-total">
+                                        <span>Total:</span>
+                                        <span>$<span
+                                                th:text="${#numbers.formatDecimal(finalTotal + (total * 0.1), 1, 2)}">0.00</span></span>
+                                    </div>
+                                </div>
+
+                                <!-- Security Badge -->
+                                <div class="text-center mt-4">
+                                    <p class="text-muted small mb-2">
+                                        <i class="fas fa-shield-alt text-success me-1"></i>
+                                        Your payment information is secure
+                                    </p>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <i class="fab fa-cc-visa fa-2x text-muted"></i>
+                                        <i class="fab fa-cc-mastercard fa-2x text-muted"></i>
+                                        <i class="fab fa-cc-amex fa-2x text-muted"></i>
+                                        <i class="fab fa-cc-paypal fa-2x text-muted"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function selectPayment(method) {
+                // Remove selected class from all cards
+                document.querySelectorAll('.payment-method-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+
+                // Add selected class to clicked card
+                event.currentTarget.classList.add('selected');
+
+                // Check the radio button
+                document.getElementById(method).checked = true;
+            }
+
+            // Initialize first payment method as selected
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelector('.payment-method-card').classList.add('selected');
+            });
+        </script>
+    </section>
+</body>
+
+</html>

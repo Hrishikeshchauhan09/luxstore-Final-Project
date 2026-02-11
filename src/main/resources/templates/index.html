@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
+
+<head>
+    <title>Home</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-background"
+                style="background-image: url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2070&auto=format&fit=crop');">
+            </div>
+            <div class="hero-overlay"></div>
+            <div class="container h-100">
+                <div class="row h-100 align-items-center">
+                    <div class="col-lg-8 mx-auto text-center hero-content">
+                        <h1 class="display-3 fw-bold mb-4 animate-fade-in">Elevate Your Style</h1>
+                        <p class="lead mb-5 animate-fade-in-delay">Discover premium fashion accessories that define
+                            elegance</p>
+                        <a th:href="@{/products}" class="btn btn-primary btn-lg animate-fade-in-delay-2">
+                            Shop Now <i class="bi bi-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-5 section-title">Featured Collections</h2>
+                <div class="row g-4">
+                    <div class="col-md-3" th:each="product : ${products}">
+                        <div class="product-card h-100">
+                            <div class="product-image">
+                                <span class="product-badge">New</span>
+                                <img th:src="@{'/products/image/' + ${product.id}}" alt="Product Image">
+                            </div>
+                            <div class="product-body">
+                                <div class="product-category" th:text="${product.category}">Category</div>
+                                <h3 class="product-name" th:text="${product.name}">Product Name</h3>
+                                <p class="product-price" th:text="'$' + ${product.price}">$99.99</p>
+                                <div class="d-flex justify-content-between align-items-center mt-auto">
+                                    <a th:href="@{'/products/' + ${product.id}}"
+                                        class="btn btn-outline-secondary btn-sm">View Details</a>
+                                    <a th:href="@{'/cart/add/' + ${product.id}}" class="btn btn-add-cart btn-sm">
+                                        <i class="bi bi-cart-plus"></i> Add
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-5">
+                    <a th:href="@{/products}" class="btn btn-primary btn-lg">View All Products</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Categories -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-5 section-title">Shop by Category</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="bi bi-circle"></i>
+                            </div>
+                            <h3>Jewelry</h3>
+                            <p>Rings, Chains, Bracelets</p>
+                            <a th:href="@{/products?category=rings}" class="stretched-link"></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="bi bi-droplet"></i>
+                            </div>
+                            <h3>Perfumes</h3>
+                            <p>Luxury Fragrances</p>
+                            <a th:href="@{/products?category=perfumes}" class="stretched-link"></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="bi bi-watch"></i>
+                            </div>
+                            <h3>Accessories</h3>
+                            <p>Watches, Wallets, Belts</p>
+                            <a th:href="@{/products?category=watches}" class="stretched-link"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us -->
+        <section class="py-5 bg-dark text-white">
+            <div class="container">
+                <h2 class="text-center mb-5 section-title">Why Choose LuxeStyle</h2>
+                <div class="row g-4">
+                    <div class="col-md-3 text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-truck fs-1"></i>
+                        </div>
+                        <h4>Free Shipping</h4>
+                        <p>On orders over $50</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-shield-check fs-1"></i>
+                        </div>
+                        <h4>Secure Payment</h4>
+                        <p>100% secure transactions</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-arrow-repeat fs-1"></i>
+                        </div>
+                        <h4>Easy Returns</h4>
+                        <p>30-day return policy</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-headset fs-1"></i>
+                        </div>
+                        <h4>24/7 Support</h4>
+                        <p>Dedicated customer service</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</body>
+
+</html>

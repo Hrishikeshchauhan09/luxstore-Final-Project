@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
+
+<head>
+    <title>Admin - All Orders</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5 pt-5">
+            <h1 class="mb-4">Manage Orders</h1>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>User</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="order : ${orders}">
+                            <td th:text="${order.id}"></td>
+                            <td th:text="${order.user.name}"></td>
+                            <td th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></td>
+                            <td th:text="'$' + ${order.totalAmount}"></td>
+                            <td>
+                                <span class="badge bg-info" th:text="${order.status}"></span>
+                            </td>
+                            <td th:text="${order.paymentMethod}"></td>
+                            <td>
+                                <!-- Placeholder for potential update status feature -->
+                                <button class="btn btn-sm btn-primary">View</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

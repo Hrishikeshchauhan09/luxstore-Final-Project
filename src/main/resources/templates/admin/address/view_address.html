@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
+<head>
+    <title>Address Management</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <h2>Address Management</h2>
+        <a th:href="@{/admin/addresses/add}" class="btn btn-primary mb-3">Add New Address</a>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Area</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Pincode</th>
+                    <th>User</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="address : ${addresses}">
+                    <td th:text="${address.id}"></td>
+                    <td th:text="${address.name}"></td>
+                    <td th:text="${address.area}"></td>
+                    <td th:text="${address.city}"></td>
+                    <td th:text="${address.state}"></td>
+                    <td th:text="${address.pincode}"></td>
+                    <td th:text="${address.user != null ? address.user.username : 'N/A'}"></td>
+                    <td>
+                        <a th:href="@{/admin/addresses/update/{id}(id=${address.id})}" class="btn btn-sm btn-warning">Edit</a>
+                        <a th:href="@{/admin/addresses/delete/{id}(id=${address.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
+
+<head>
+    <title>My Orders</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5 pt-5">
+            <h1 class="mb-4">My Orders</h1>
+
+            <div th:if="${orders != null and !orders.isEmpty()}">
+                <div class="card mb-3" th:each="order : ${orders}">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="mb-1"><strong>Order ID:</strong> <span th:text="${order.id}"></span></p>
+                                <p class="mb-1"><strong>Date:</strong> <span
+                                        th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></span></p>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="mb-1"><strong>Total:</strong> <span
+                                        th:text="'$' + ${order.totalAmount}"></span></p>
+                                <p class="mb-1"><strong>Payment:</strong> <span th:text="${order.paymentMethod}"></span>
+                                </p>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="mb-1"><strong>Status:</strong>
+                                    <span class="badge bg-info" th:text="${order.status}"></span>
+                                </p>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="mb-1"><strong>Shipping Address:</strong></p>
+                                <p class="text-muted small" th:text="${order.shippingAddress}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${orders == null or orders.isEmpty()}" class="text-center py-5">
+                <i class="bi bi-bag-x display-1 text-muted"></i>
+                <h3 class="mt-3">No orders yet</h3>
+                <a th:href="@{/products}" class="btn btn-primary mt-3">Start Shopping</a>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

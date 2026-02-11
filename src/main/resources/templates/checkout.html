@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
+
+<head>
+    <title>Checkout</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5 pt-5">
+            <h1 class="mb-4">Checkout</h1>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <form th:action="@{/payment}" method="post">
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Shipping Details</h5>
+                                <a th:href="@{/user/addresses}" class="btn btn-sm btn-outline-primary">Manage
+                                    Addresses</a>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3" th:if="${addresses != null and !addresses.isEmpty()}">
+                                    <label class="form-label">Select Saved Address</label>
+                                    <div class="list-group">
+                                        <label class="list-group-item" th:each="addr : ${addresses}">
+                                            <input class="form-check-input me-1" type="radio" name="selectedAddressId"
+                                                th:value="${addr.id}" th:checked="${addrStat.first}" required>
+                                            <span th:text="${addr.name}">Home</span>:
+                                            <span
+                                                th:text="${addr.area} + ', ' + ${addr.city} + ', ' + ${addr.state} + ' - ' + ${addr.pincode}">Address</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="alert alert-info" th:if="${addresses == null or addresses.isEmpty()}">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    You don't have any saved addresses. Please <a th:href="@{/user/addresses}">add an
+                                        address</a> first.
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100"
+                            th:disabled="${addresses == null or addresses.isEmpty()}">
+                            <i class="fas fa-arrow-right me-2"></i>Proceed to Payment
+                        </button>
+                    </form>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Order Summary</h5>
+                            <hr>
+                            <div class="d-flex justify-content-between mb-3">
+                                <strong>Total:</strong>
+                                <strong th:text="'$' + ${total}"></strong>
+                            </div>
+                            <p class="text-muted small">
+                                Note: This is a demo application. No actual payment will be processed.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
+
+<head>
+    <title>Add Product</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5 pt-5">
+            <h2 class="mb-4 text-center">Add New Product</h2>
+
+            <div class="row">
+                <!-- LEft Column: Form -->
+                <div class="col-lg-7">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <form th:action="@{/admin/products/add}" th:object="${product}" method="post"
+                                enctype="multipart/form-data">
+
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Product Name</label>
+                                    <input type="text" class="form-control" id="name" th:field="*{name}" required
+                                        oninput="updatePreview()">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="category" class="form-label">Category</label>
+                                        <select class="form-select" id="category" th:field="*{category}" required
+                                            onchange="updatePreview()">
+                                            <option value="">Select Category</option>
+                                            <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}">
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="gender" class="form-label">Gender</label>
+                                        <select class="form-select" id="gender" th:field="*{gender}" required>
+                                            <option value="">Select Gender</option>
+                                            <option th:each="gen : ${genders}" th:value="${gen}" th:text="${gen}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Price ($)</label>
+                                    <input type="number" step="0.01" class="form-control" id="price" th:field="*{price}"
+                                        required oninput="updatePreview()">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" th:field="*{description}" rows="4"
+                                        oninput="updatePreview()"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="imageFile" class="form-label">Product Image</label>
+                                    <input type="file" class="form-control" id="imageFile" name="imageFile"
+                                        accept="image/*" onchange="previewImage(this)">
+                                </div>
+
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">Add Product</button>
+                                    <a th:href="@{/admin/products}" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Live Preview -->
+                <div class="col-lg-5">
+                    <div class="sticky-top" style="top: 100px; z-index: 10;">
+                        <h4 class="text-center mb-3 text-muted">Live Preview</h4>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <span class="product-badge">New</span>
+                                <!-- Placeholder image initially -->
+                                <img id="preview-img" src="https://via.placeholder.com/300x300?text=No+Image"
+                                    alt="Product Preview" style="object-fit: cover;">
+                            </div>
+                            <div class="product-body">
+                                <div id="preview-category" class="product-category">CATEGORY</div>
+                                <h3 id="preview-name" class="product-name">Product Name</h3>
+                                <p id="preview-desc" class="text-muted small mb-3"
+                                    style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    Product description will appear here...
+                                </p>
+                                <p id="preview-price" class="product-price">$0.00</p>
+                                <div class="d-flex justify-content-between align-items-center mt-auto">
+                                    <button class="btn btn-outline-secondary btn-sm" disabled>View Details</button>
+                                    <button class="btn btn-add-cart btn-sm" disabled>
+                                        <i class="bi bi-cart-plus"></i> Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-info mt-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Start typing to see how your product will look!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function updatePreview() {
+                // Name
+                const nameInput = document.getElementById('name').value;
+                document.getElementById('preview-name').innerText = nameInput || 'Product Name';
+
+                // Price
+                const priceInput = document.getElementById('price').value;
+                document.getElementById('preview-price').innerText = '$' + (priceInput || '0.00');
+
+                // Category
+                const categorySelect = document.getElementById('category');
+                const categoryText = categorySelect.options[categorySelect.selectedIndex].text;
+                if (categorySelect.value) {
+                    document.getElementById('preview-category').innerText = categoryText;
+                } else {
+                    document.getElementById('preview-category').innerText = 'CATEGORY';
+                }
+
+                // Description
+                const descInput = document.getElementById('description').value;
+                document.getElementById('preview-desc').innerText = descInput || 'Product description will appear here...';
+            }
+
+            function previewImage(input) {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('preview-img').src = e.target.result;
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                } else {
+                    document.getElementById('preview-img').src = "https://via.placeholder.com/300x300?text=No+Image";
+                }
+            }
+        </script>
+    </section>
+</body>
+
+</html>
