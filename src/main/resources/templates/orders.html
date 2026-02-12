@@ -15,23 +15,18 @@
                 <div class="card mb-3" th:each="order : ${orders}">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <p class="mb-1"><strong>Order ID:</strong> <span th:text="${order.id}"></span></p>
                                 <p class="mb-1"><strong>Date:</strong> <span
                                         th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></span></p>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <p class="mb-1"><strong>Total:</strong> <span
                                         th:text="'$' + ${order.totalAmount}"></span></p>
                                 <p class="mb-1"><strong>Payment:</strong> <span th:text="${order.paymentMethod}"></span>
                                 </p>
                             </div>
-                            <div class="col-md-3">
-                                <p class="mb-1"><strong>Status:</strong>
-                                    <span class="badge bg-info" th:text="${order.status}"></span>
-                                </p>
-                            </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <p class="mb-1"><strong>Shipping Address:</strong></p>
                                 <p class="text-muted small" th:text="${order.shippingAddress}"></p>
                             </div>
